@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MobVision Halloween — Two State Stage</title><style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#0a0611;font-family:Georgia,serif}
+#stage{position:relative;width:100vw;height:100vh;overflow:hidden;background:url('stage.png') center/100% 100% no-repeat;perspective:1600px;cursor:pointer}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(8,2,19,.26),transparent 38%,rgba(8,2,18,.05));}
+#card-wrap{position:absolute;left:15.4%;top:18%;height:66%;aspect-ratio:427/654;perspective:1600px;z-index:3;filter:drop-shadow(9px 14px 15px rgba(0,0,0,.65))}
+#card{position:relative;height:100%;width:100%;transform-style:preserve-3d;transition:transform 1.8s cubic-bezier(.38,.05,.18,1)}
+#stage.revealed #card{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border:2px solid #ce9d5d;border-radius:11px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+#front{background:url('card-front.png') center/100% 100% no-repeat;transform:rotateY(0deg) translateZ(1px)}
+#back{transform:rotateY(180deg) translateZ(1px);background:url('card-back.png') center/100% 100% no-repeat}
+#back .stars{position:absolute;top:6%;font-size:clamp(12px,1.6vw,28px);color:#e2ac6e;letter-spacing:.2em}
+#back .bottom{position:absolute;bottom:5%;font-size:clamp(12px,1.6vw,28px);color:#e2ac6e}
+.small{font-size:clamp(11px,1.02vw,21px);letter-spacing:.12em;color:#c3a078;text-transform:uppercase}
+.name{font-size:clamp(20px,2.15vw,50px);line-height:1.13;overflow-wrap:anywhere;max-width:100%}
+.track{font-size:clamp(17px,1.55vw,39px);line-height:1.18;overflow-wrap:anywhere;max-width:100%}
+.costume{font-size:clamp(14px,1.1vw,24px);overflow-wrap:anywhere;max-width:100%}
+.line{width:80%;height:1px;background:linear-gradient(90deg,transparent,#b88f6c,transparent)}
+#character{position:absolute;left:56%;bottom:16.5%;width:35%;height:67%;pointer-events:none;z-index:4}
+#character img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;transform-origin:center bottom;will-change:transform,opacity}
+#masked{opacity:1;filter:drop-shadow(0 0 16px #d59c704d);transition:opacity .85s ease .2s}
+#persona{opacity:0;transform:translateY(0) scale(.95);filter:drop-shadow(0 15px 16px rgba(0,0,0,.8));transition:opacity 1.15s ease .2s,transform 1.9s cubic-bezier(.18,.72,.22,1)}
+#stage.revealed #masked{opacity:0}
+#stage.revealed #persona{opacity:1;transform:translateY(9%) scale(1.32)}
+#instruction{position:absolute;right:1%;bottom:1%;z-index:7;color:#f3e1cf;font:14px Arial,sans-serif;text-shadow:0 1px 4px #000;opacity:0;transition:opacity .2s}#stage:hover #instruction{opacity:.8}
+@media (prefers-reduced-motion: reduce){#card,#masked,#persona{transition-duration:.01s!important}}
+</style></head><body><main id="stage"><div id="card-wrap"><div id="card"><div id="front" class="face"></div><div id="back" class="face"></div></div></div><div id="character"><img id="masked" alt="Reusable masked silhouette"><img id="persona" alt="Full-body artist persona"></div><div id="instruction">Click: reveal / reset · R: reveal · X: reset</div></main><script src="settings.js"></script><script>
+const cfg=window.MOBVISION||{};
+const stage=document.getElementById('stage');
+document.getElementById('masked').src=cfg.silhouette==='male'?'mask-male.svg':'mask-female.svg';
+document.getElementById('persona').src=cfg.persona||'demo-persona.png';
+function reveal(on){stage.classList.toggle('revealed',on)}
+stage.addEventListener('click',()=>reveal(!stage.classList.contains('revealed')));
+document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='r')reveal(true);if(e.key.toLowerCase()==='x')reveal(false)});
+</script></body></html>
